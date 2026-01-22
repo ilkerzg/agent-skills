@@ -17,48 +17,77 @@ Generate **100% working, production-ready fal.ai workflow JSON files**. Workflow
 ### A1: Basic Workflow Structure
 
 Every workflow MUST have:
-1. **Input node** - receives user input
-2. **Run nodes** - execute fal models
-3. **Output/Display node** - returns results
+1. **Input schema** - defined in `schema.input` (NOT a separate node)
+2. **Run nodes** - execute fal models (`type: "run"`)
+3. **Output/Display node** - returns results (`type: "display"`)
+
+⚠️ **CRITICAL: Valid Node Types**
+- `"run"` - executes a model/app
+- `"display"` - outputs results
+
+**There is NO `type: "input"` node!** Input is defined ONLY in `schema.input`.
 
 ### Minimal Working Example
 
 ```json
 {
-  "input": {
-    "id": "input",
-    "type": "input",
-    "depends": [],
-    "input": {
-      "prompt": ""
+  "name": "my-workflow",
+  "title": "My Workflow",
+  "contents": {
+    "name": "workflow",
+    "nodes": {
+      "output": {
+        "type": "display",
+        "id": "output",
+        "depends": ["node-image"],
+        "input": {},
+        "fields": {
+          "image": "$node-image.images.0.url"
+        }
+      },
+      "node-image": {
+        "type": "run",
+        "id": "node-image",
+        "depends": ["input"],
+        "app": "fal-ai/flux/dev",
+        "input": {
+          "prompt": "$input.prompt"
+        }
+      }
+    },
+    "output": {
+      "image": "$node-image.images.0.url"
+    },
+    "schema": {
+      "input": {
+        "prompt": {
+          "name": "prompt",
+          "label": "Prompt",
+          "type": "string",
+          "required": true,
+          "modelId": "node-image"
+        }
+      },
+      "output": {
+        "image": {
+          "name": "image",
+          "label": "Generated Image",
+          "type": "string"
+        }
+      }
+    },
+    "version": "1",
+    "metadata": {
+      "input": {
+        "position": { "x": 0, "y": 0 }
+      },
+      "description": "Simple text to image workflow"
     }
   },
-  "node_1": {
-    "id": "node_1",
-    "type": "run",
-    "depends": ["input"],
-    "app": "fal-ai/flux/dev",
-    "input": {
-      "prompt": "$input.prompt"
-    }
-  },
-  "node_2": {
-    "id": "node_2",
-    "type": "run",
-    "depends": ["node_1"],
-    "app": "fal-ai/bria/background/remove",
-    "input": {
-      "image_url": "$node_1.images.0.url"
-    }
-  },
-  "output": {
-    "id": "output",
-    "type": "display",
-    "depends": ["node_2"],
-    "fields": {
-      "image": "$node_2.image"
-    }
-  }
+  "is_public": true,
+  "user_id": "",
+  "user_nickname": "",
+  "created_at": ""
 }
 ```
 
@@ -99,17 +128,14 @@ Every workflow MUST have:
 
 ### A2: Node Types
 
-#### Input Node
-```json
-"input": {
-  "id": "input",
-  "type": "input",
-  "depends": [],
-  "input": {
-    "field_name": ""
-  }
-}
-```
+⚠️ **ONLY TWO VALID NODE TYPES EXIST:**
+
+| Type | Purpose |
+|------|---------|
+| `"run"` | Execute a model/app |
+| `"display"` | Output results to user |
+
+**❌ INVALID:** `type: "input"` - This does NOT exist and will cause errors!
 
 #### Run Node
 ```json
@@ -453,6 +479,38 @@ https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-pro
 
 ## C. Critical Rules
 
+### C0: ONLY "run" and "display" Node Types (MOST CRITICAL)
+
+**This is the #1 cause of workflow errors!**
+
+```json
+// ❌ WRONG - "input" type does NOT exist
+"input": {
+  "id": "input",
+  "type": "input",    // ❌ INVALID TYPE - WILL FAIL!
+  "depends": [],
+  "input": { "prompt": "" }
+}
+
+// ✅ CORRECT - No input node, use schema.input instead
+"nodes": {
+  "node-first": {
+    "type": "run",      // ✅ Valid
+    "id": "node-first",
+    "depends": ["input"],  // References schema.input
+    "app": "...",
+    "input": { "prompt": "$input.prompt" }
+  },
+  "output": {
+    "type": "display",  // ✅ Valid
+    "id": "output",
+    ...
+  }
+}
+```
+
+**Valid types:** `"run"`, `"display"` — **NOTHING ELSE!**
+
 ### C1: Dependencies Must Match References
 
 Every `$node-id.xxx` reference MUST have that node in `depends`:
@@ -780,6 +838,8 @@ This workflow:
 
 Before outputting any workflow, verify:
 
+- [ ] **⚠️ CRITICAL: All nodes have `type: "run"` or `type: "display"` ONLY (NO `type: "input"`!)**
+- [ ] **⚠️ CRITICAL: No separate input node exists - input is defined ONLY in `schema.input`**
 - [ ] Every `$node.xxx` has matching `depends` entry
 - [ ] Every node `id` matches object key
 - [ ] No string interpolation in references
@@ -788,6 +848,7 @@ Before outputting any workflow, verify:
 - [ ] Correct LLM type (router vs router/vision)
 - [ ] Correct output references (.output, .images.0.url, .video.url, .image.url, .audio_file.url, .frame.url)
 - [ ] Positions arranged left-to-right
+- [ ] Root-level `output` object exists (alongside `nodes` and `schema`)
 
 ---
 
@@ -884,6 +945,29 @@ Generate the JSON directly following the structure in this document.
 ---
 
 ## Troubleshooting
+
+### Invalid Node Type Error (MOST COMMON)
+```
+Error: unexpected value; permitted: 'run', 'display', field required
+```
+**Cause:** You created a node with `type: "input"` which does NOT exist.
+
+**Solution:**
+1. Remove ANY node with `type: "input"`
+2. Define input fields ONLY in `schema.input`
+3. First nodes should `depends: ["input"]` to reference the schema
+
+```json
+// ❌ WRONG
+"input": { "type": "input", ... }
+
+// ✅ CORRECT - No input node, use schema.input
+"schema": {
+  "input": {
+    "prompt": { "name": "prompt", "type": "string", "modelId": "first-node" }
+  }
+}
+```
 
 ### Dependency Error
 ```
