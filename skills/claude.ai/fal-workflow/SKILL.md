@@ -187,15 +187,70 @@ Every workflow MUST have:
 | `$node.audio_file.url` | Audio URL | `$node-music.audio_file.url` |
 | `$node.frame.url` | Extracted frame | `$node-extract.frame.url` |
 
-### CRITICAL: No String Interpolation
+### CRITICAL: No String Interpolation (ABSOLUTE RULE)
+
+**⚠️ NEVER mix text with variables in ANY input field!**
+
+A variable reference MUST be the ENTIRE value - no exceptions!
 
 ```json
-// ❌ WRONG
+// ❌ WRONG - WILL BREAK THE WORKFLOW
 "prompt": "Create image of $input.subject in $input.style"
+"prompt": "Storyboard: $node-a.output\nStyle: $node-b.output"
+"prompt": "Generate a video based on: $director.output"
 
-// ✅ CORRECT - Use LLM to combine inputs
-"prompt": "$input.subject",
-"system_prompt": "Create a detailed image based on the subject provided..."
+// ✅ CORRECT - Variable is the ENTIRE value
+"prompt": "$input.prompt"
+"prompt": "$node-llm.output"
+"image_url": "$node-image.images.0.url"
+```
+
+**Solutions for combining multiple values:**
+
+#### Option 1: Use Merge Text Node
+```json
+"merge-context": {
+  "type": "run",
+  "id": "merge-context",
+  "depends": ["node-a", "node-b"],
+  "app": "fal-ai/merge-text",
+  "input": {
+    "texts": ["$node-a.output", "$node-b.output"],
+    "separator": "\n\n---\n\n"
+  },
+  "metadata": { "position": { "x": 400, "y": 0 } }
+},
+"next-node": {
+  "type": "run",
+  "id": "next-node",
+  "depends": ["merge-context"],
+  "app": "openrouter/router",
+  "input": {
+    "prompt": "$merge-context.output",
+    "system_prompt": "Process the combined input above..."
+  }
+}
+```
+
+#### Option 2: Combine in Upstream LLM
+Have one LLM produce ALL the context needed, then downstream nodes reference only that single output.
+
+```json
+// ✅ CORRECT - One LLM produces complete context
+"director": {
+  "depends": ["input"],
+  "input": {
+    "prompt": "$input.prompt",
+    "system_prompt": "Create BOTH style guide AND storyboard in one document..."
+  }
+},
+"scene-prompt": {
+  "depends": ["director"],
+  "input": {
+    "prompt": "$director.output",  // Single reference, complete context
+    "system_prompt": "Extract Scene 1 from the document above..."
+  }
+}
 ```
 
 ---
@@ -390,7 +445,92 @@ https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-pro
 
 ---
 
-### B5: FFmpeg Utilities (CRITICAL)
+### B5: Text Utilities (CRITICAL for combining values)
+
+**⚠️ These are the ONLY ways to combine text values - string interpolation is NOT supported!**
+
+#### Text Concat (2 texts)
+Concatenates exactly TWO text values. `text1` can be static text!
+
+```json
+{
+  "app": "fal-ai/text-concat",
+  "input": {
+    "text1": "Brand expert response:",
+    "text2": "$node-llm.output"
+  }
+}
+```
+**Output:** `$node.results`
+
+**Use Cases:**
+- Add a label/prefix to a variable: `"text1": "Scene 1:", "text2": "$node.output"`
+- Combine static instruction with dynamic content
+
+#### Merge Text (Multiple texts)
+Merges an ARRAY of text values with a separator.
+
+```json
+{
+  "app": "fal-ai/workflow-utilities/merge-text",
+  "input": {
+    "texts": [
+      "$node-a.results",
+      "$node-b.results",
+      "$node-c.results"
+    ],
+    "separator": "------"
+  }
+}
+```
+**Output:** `$node.text`
+
+**Use Cases:**
+- Combine 3+ LLM outputs before passing to next node
+- Merge multiple expert responses into single context
+
+#### Pattern: Label + Merge
+Common pattern for combining multiple labeled outputs:
+
+```json
+// Step 1: Add labels with text-concat
+"label-brand": {
+  "app": "fal-ai/text-concat",
+  "input": {
+    "text1": "Brand expert:",
+    "text2": "$brand-llm.output"
+  }
+},
+"label-visual": {
+  "app": "fal-ai/text-concat",
+  "input": {
+    "text1": "Visual director:",
+    "text2": "$visual-llm.output"
+  }
+},
+
+// Step 2: Merge labeled outputs
+"merged-context": {
+  "depends": ["label-brand", "label-visual"],
+  "app": "fal-ai/workflow-utilities/merge-text",
+  "input": {
+    "texts": ["$label-brand.results", "$label-visual.results"],
+    "separator": "\n\n---\n\n"
+  }
+},
+
+// Step 3: Use merged context
+"final-llm": {
+  "depends": ["merged-context"],
+  "input": {
+    "prompt": "$merged-context.text"
+  }
+}
+```
+
+---
+
+### B6: FFmpeg Utilities (CRITICAL)
 
 #### Extract Frame from Video
 ```json
@@ -440,7 +580,50 @@ https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-pro
 
 ---
 
-### B6: Image Processing
+### B7: Image Utilities
+
+#### Crop Image
+Crops a portion of an image using percentage-based coordinates.
+
+```json
+{
+  "app": "fal-ai/workflow-utilities/crop-image",
+  "input": {
+    "image_url": "$node-image.images.0.url",
+    "x_percent": 0,
+    "y_percent": 0,
+    "width_percent": 33.333333,
+    "height_percent": 33.333333
+  }
+}
+```
+**Output:** `$node.image.url`
+
+**Parameters:**
+- `x_percent`: Starting X position (0-100)
+- `y_percent`: Starting Y position (0-100)
+- `width_percent`: Width of crop area (0-100)
+- `height_percent`: Height of crop area (0-100)
+
+**Use Cases:**
+- Split image into grid tiles (3x3, 2x2, etc.)
+- Extract specific region from generated image
+- Create multiple crops for parallel processing
+
+**Example: 3x3 Grid Split**
+```json
+// Top-left tile
+"crop-1": { "input": { "x_percent": 0, "y_percent": 0, "width_percent": 33.33, "height_percent": 33.33 } }
+// Top-center tile
+"crop-2": { "input": { "x_percent": 33.33, "y_percent": 0, "width_percent": 33.33, "height_percent": 33.33 } }
+// Top-right tile
+"crop-3": { "input": { "x_percent": 66.67, "y_percent": 0, "width_percent": 33.33, "height_percent": 33.33 } }
+// ... and so on for all 9 tiles
+```
+
+---
+
+### B8: Image Processing
 
 #### Upscale Image
 ```json
@@ -840,9 +1023,9 @@ Before outputting any workflow, verify:
 
 - [ ] **⚠️ CRITICAL: All nodes have `type: "run"` or `type: "display"` ONLY (NO `type: "input"`!)**
 - [ ] **⚠️ CRITICAL: No separate input node exists - input is defined ONLY in `schema.input`**
+- [ ] **⚠️ CRITICAL: No string interpolation - variable MUST be ENTIRE value (use `fal-ai/merge-text` to combine)**
 - [ ] Every `$node.xxx` has matching `depends` entry
 - [ ] Every node `id` matches object key
-- [ ] No string interpolation in references
 - [ ] Input schema has `modelId` for each field
 - [ ] Output depends on ALL referenced nodes
 - [ ] Correct LLM type (router vs router/vision)
@@ -865,6 +1048,9 @@ When user doesn't specify:
 | Vision LLM | `openrouter/router/vision` with `google/gemini-3-pro-preview` |
 | Music | `fal-ai/elevenlabs/music` |
 | Upscale | `fal-ai/seedvr/upscale/image` |
+| **Text concat (2 texts)** | **`fal-ai/text-concat`** |
+| **Text merge (array)** | **`fal-ai/workflow-utilities/merge-text`** |
+| **Crop image** | **`fal-ai/workflow-utilities/crop-image`** |
 | Video merge | `fal-ai/ffmpeg-api/merge-videos` |
 | Audio+Video merge | `fal-ai/ffmpeg-api/merge-audio-video` |
 | Frame extract | `fal-ai/ffmpeg-api/extract-frame` |
@@ -878,6 +1064,9 @@ When user doesn't specify:
 | Model Type | Output Reference |
 |------------|------------------|
 | LLM | `$node.output` |
+| Text Concat | `$node.results` |
+| Merge Text | `$node.text` |
+| Crop Image | `$node.image.url` |
 | Image Gen (array) | `$node.images.0.url` |
 | Image Process (single) | `$node.image.url` |
 | Video | `$node.video.url` |
@@ -890,6 +1079,9 @@ When user doesn't specify:
 ```
 fal-ai/nano-banana-pro
 fal-ai/nano-banana-pro/edit
+fal-ai/text-concat
+fal-ai/workflow-utilities/merge-text
+fal-ai/workflow-utilities/crop-image
 fal-ai/bytedance/seedance/v1.5/pro/image-to-video
 fal-ai/kling-video/o1/image-to-video
 fal-ai/kling-video/v2.6/pro/image-to-video

@@ -117,3 +117,148 @@ Add the skill to project knowledge or paste SKILL.md contents into the conversat
 
 If the skill requires network access, instruct users to add required domains at `claude.ai/settings/capabilities`:
 - `*.fal.ai` - for fal.ai API access
+
+---
+
+## Creating fal.ai Workflows
+
+### Workflow JSON Structure
+
+```json
+{
+  "name": "workflow-slug",
+  "title": "Human Readable Title",
+  "contents": {
+    "name": "workflow",
+    "nodes": { ... },
+    "output": { ... },
+    "schema": { "input": { ... }, "output": { ... } },
+    "version": "1",
+    "metadata": { "input": { "position": { "x": 0, "y": 0 } } }
+  },
+  "is_public": true,
+  "user_id": "",
+  "user_nickname": "",
+  "created_at": ""
+}
+```
+
+### Node Types
+
+**Run Node:**
+```json
+"node-id": {
+  "type": "run",
+  "id": "node-id",
+  "depends": ["input", "other-node"],
+  "app": "fal-ai/model-id",
+  "input": { "param": "$other-node.output" },
+  "metadata": { "position": { "x": 500, "y": 0 } }
+}
+```
+
+**Display/Output Node:**
+```json
+"output": {
+  "type": "display",
+  "id": "output",
+  "depends": ["node-a", "node-b"],
+  "input": {},
+  "metadata": { "position": { "x": 2000, "y": 0 } },
+  "fields": { "result": "$node-a.video.url" }
+}
+```
+
+### CRITICAL: Variable Reference Rules
+
+**⚠️ NO STRING INTERPOLATION - NEVER mix text with variables!**
+
+```json
+// ❌ WRONG - NEVER DO THIS:
+"prompt": "Create image of $input.subject in $input.style"
+"prompt": "Storyboard: $node.output\nStyle: $other.output"
+
+// ✅ CORRECT - Variable must be the ENTIRE value:
+"prompt": "$input.prompt"
+"prompt": "$node.output"
+```
+
+**To combine multiple values, use Merge Text node:**
+```json
+"merge-context": {
+  "type": "run",
+  "id": "merge-context",
+  "depends": ["node-a", "node-b"],
+  "app": "fal-ai/merge-text",
+  "input": {
+    "texts": ["$node-a.output", "$node-b.output"],
+    "separator": "\n\n"
+  },
+  "metadata": { "position": { "x": 400, "y": 0 } }
+}
+
+// Then reference the merged output:
+"next-node": {
+  "depends": ["merge-context"],
+  "input": { "prompt": "$merge-context.output" }
+}
+```
+
+### Dependency Rules
+
+1. **Every `$node-id.xxx` reference MUST have that node in `depends`**
+2. **Nodes using `$input.xxx` MUST have `depends: ["input"]`**
+3. **Output node's `depends` must include ALL nodes referenced in `fields`**
+4. **Node `id` must match the object key**
+
+### Output Reference Types
+
+| Model Type | Reference |
+|------------|-----------|
+| LLM | `$node.output` |
+| Image Gen (array) | `$node.images.0.url` |
+| Image Process (single) | `$node.image.url` |
+| Video | `$node.video.url` |
+| Music | `$node.audio_file.url` |
+| Frame Extract | `$node.frame.url` |
+
+### Default Models
+
+| Task | App ID |
+|------|--------|
+| Image generation | `fal-ai/nano-banana-pro` |
+| Image editing | `fal-ai/nano-banana-pro/edit` |
+| Video (I2V) | `fal-ai/bytedance/seedance/v1.5/pro/image-to-video` |
+| Text LLM | `openrouter/router` with `google/gemini-2.5-flash` |
+| Vision LLM | `openrouter/router/vision` with `google/gemini-3-pro-preview` |
+| Video merge | `fal-ai/ffmpeg-api/merge-videos` |
+| Audio+Video merge | `fal-ai/ffmpeg-api/merge-audio-video` |
+| Frame extract | `fal-ai/ffmpeg-api/extract-frame` |
+| Upscale | `fal-ai/seedvr/upscale/image` |
+
+### Schema Input Fields
+
+```json
+"schema": {
+  "input": {
+    "field_name": {
+      "name": "field_name",
+      "label": "Display Label",
+      "type": "string",
+      "description": "Help text",
+      "required": true,
+      "ui": { "placeholder": "Enter..." },
+      "modelId": "first-consuming-node"  // REQUIRED
+    }
+  }
+}
+```
+
+### Pre-Output Checklist
+
+- [ ] Every `$node.xxx` has matching `depends` entry
+- [ ] Every node `id` matches object key
+- [ ] **NO string interpolation** - variables are entire values only
+- [ ] Input schema has `modelId` for each field
+- [ ] Output depends on ALL referenced nodes
+- [ ] Nodes using `$input.xxx` have `depends: ["input"]`
