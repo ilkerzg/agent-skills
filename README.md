@@ -4,6 +4,12 @@ A collection of skills for AI coding agents. Skills are packaged instructions an
 
 Skills follow the [Agent Skills](https://agentskills.io/) format.
 
+## Installation
+
+```bash
+npx skills add fal-ai-community/skills
+```
+
 ## Available Skills
 
 ### fal-generate
@@ -84,14 +90,6 @@ Image editing: style transfer, object removal, backgrounds.
 - "Edit this image"
 - "Remove object"
 - "Change background"
-
-### react-best-practices
-
-React/Next.js performance optimization guidelines.
-
-### web-design-guidelines
-
-Web interface best practices: accessibility, performance, UX.
 
 ## Getting Your API Key
 
@@ -253,12 +251,6 @@ All fal.ai scripts support:
 | `--help`, `-h` | Show help |
 | `--json` | Raw JSON output |
 | `--schema [MODEL]` | Get OpenAPI schema (generate.sh) |
-
-## Installation
-
-```bash
-npx add-skill vercel-labs/agent-skills
-```
 
 ## Environment Setup
 
