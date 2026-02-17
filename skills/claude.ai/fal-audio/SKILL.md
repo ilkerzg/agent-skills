@@ -21,8 +21,8 @@ Text-to-speech and speech-to-text using state-of-the-art audio models on fal.ai.
 
 | Model | Notes |
 |-------|-------|
-| `fal-ai/minimax/speech-2.6-hd` | **Best quality** |
-| `fal-ai/minimax/speech-2.6-turbo` | Fast, good quality |
+| `fal-ai/minimax/speech-2.8-hd` | **Best quality** |
+| `fal-ai/minimax/speech-2.8-turbo` | Fast, good quality |
 | `fal-ai/elevenlabs/eleven-v3` | Natural voices |
 | `fal-ai/chatterbox/multilingual` | Multi-language, fast |
 | `fal-ai/kling-video/v1/tts` | For video sync |
@@ -56,7 +56,7 @@ bash /mnt/skills/user/fal-audio/scripts/text-to-speech.sh [options]
 
 **Arguments:**
 - `--text` - Text to convert to speech (required)
-- `--model` - TTS model (defaults to `fal-ai/minimax/speech-2.6-turbo`)
+- `--model` - TTS model (defaults to `fal-ai/minimax/speech-2.8-turbo`)
 - `--voice` - Voice ID or name (model-specific)
 
 **Examples:**
@@ -69,7 +69,7 @@ bash /mnt/skills/user/fal-audio/scripts/text-to-speech.sh \
 # High quality with MiniMax HD
 bash /mnt/skills/user/fal-audio/scripts/text-to-speech.sh \
   --text "This is premium quality speech." \
-  --model "fal-ai/minimax/speech-2.6-hd"
+  --model "fal-ai/minimax/speech-2.8-hd"
 
 # Natural voices with ElevenLabs
 bash /mnt/skills/user/fal-audio/scripts/text-to-speech.sh \
@@ -116,7 +116,7 @@ bash /mnt/skills/user/fal-audio/scripts/speech-to-text.sh \
 ### Text-to-Speech
 ```javascript
 mcp__fal-ai__generate({
-  modelId: "fal-ai/minimax/speech-2.6-turbo",
+  modelId: "fal-ai/minimax/speech-2.8-turbo",
   input: {
     text: "Hello, welcome to the future of AI."
   }
@@ -138,7 +138,7 @@ mcp__fal-ai__generate({
 ### Text-to-Speech Output
 ```
 Generating speech...
-Model: fal-ai/minimax/speech-2.6-turbo
+Model: fal-ai/minimax/speech-2.8-turbo
 
 Speech generated!
 
@@ -182,12 +182,12 @@ Here's the transcription:
 
 ### Text-to-Speech
 
-**MiniMax Speech 2.6 HD** (`fal-ai/minimax/speech-2.6-hd`)
+**MiniMax Speech 2.8 HD** (`fal-ai/minimax/speech-2.8-hd`)
 - Best for: Premium quality requirements
 - Quality: **Highest**
 - Speed: Medium
 
-**MiniMax Speech 2.6 Turbo** (`fal-ai/minimax/speech-2.6-turbo`)
+**MiniMax Speech 2.8 Turbo** (`fal-ai/minimax/speech-2.8-turbo`)
 - Best for: General use with good quality
 - Quality: High
 - Speed: Fast

@@ -184,9 +184,10 @@ bash generate.sh --image-url "https://example.com/image.jpg" ...
 
 | Model | Notes |
 |-------|-------|
+| `fal-ai/imagen4/preview` | **Best quality** - Google Imagen 4 |
 | `fal-ai/nano-banana-pro` | **Best overall** - T2I and editing |
 | `fal-ai/kling-image/o3/text-to-image` | Highest quality photorealistic |
-| `fal-ai/flux-2-turbo` | Open source, high quality |
+| `fal-ai/flux-2` | Open source, high quality |
 | `fal-ai/flux-2/klein/realtime` | Real-time (~0.3s), rapid iteration |
 | `fal-ai/qwen-image/v2.5` | Strong Asian aesthetic, detailed scenes |
 | `fal-ai/z-image` | Fast turbo, good quality |
@@ -198,6 +199,8 @@ bash generate.sh --image-url "https://example.com/image.jpg" ...
 
 | Model | Notes |
 |-------|-------|
+| `fal-ai/kling-video/o3/pro/text-to-video` | Kling O3, highest quality |
+| `fal-ai/kling-video/v3/pro/text-to-video` | Kling V3, newest |
 | `fal-ai/veo3.1` | High quality |
 | `fal-ai/bytedance/seedance/v1/pro` | Fast, good quality |
 | `fal-ai/sora-2/pro` | OpenAI Sora |

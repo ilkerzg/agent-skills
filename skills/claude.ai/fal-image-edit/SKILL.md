@@ -111,7 +111,7 @@ mcp__fal-ai__generate({
 ### Object Removal
 ```javascript
 mcp__fal-ai__generate({
-  modelId: "bria/fibo-edit",
+  modelId: "fal-ai/bria/fibo-edit",
   input: {
     image_url: "https://example.com/photo.jpg",
     prompt: "Remove the person on the left"
