@@ -4,7 +4,7 @@ set -e
 # talking-head.sh — Generate a talking head video from portrait + audio/text
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODEL="fal-ai/veed/fabric-1.0"
+MODEL="veed/fabric-1.0"
 TTS_MODEL="fal-ai/minimax/speech-2.6-turbo"
 IMAGE_URL=""
 AUDIO_URL=""

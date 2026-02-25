@@ -51,7 +51,7 @@ if [ -z "$MODEL" ]; then
     remix) MODEL="fal-ai/kling-video/o3/standard/video-to-video/reference";;
     edit) MODEL="fal-ai/kling-video/o3/standard/video-to-video/edit";;
     upscale) MODEL="fal-ai/topaz/upscale/video";;
-    remove-bg) MODEL="fal-ai/bria/video/background-removal";;
+    remove-bg) MODEL="bria/video/background-removal";;
     *) echo "Error: Unknown operation: $OPERATION" >&2; exit 1;;
   esac
 fi

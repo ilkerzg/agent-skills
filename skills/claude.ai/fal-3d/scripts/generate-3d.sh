@@ -4,7 +4,7 @@ set -e
 # generate-3d.sh — Generate a 3D model from text or image
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODEL="fal-ai/hunyuan-3d/v3.1"
+MODEL="fal-ai/hunyuan3d-v3/image-to-3d"
 IMAGE_URL=""
 PROMPT=""
 EXTRA_PARAMS=""
