@@ -52,16 +52,30 @@ Analyze and understand images using fal.ai vision models — segmentation, detec
 | `--query` / `-q` | Text prompt for segment/qa operations | For segment/qa |
 | `--model` / `-m` | Override model endpoint | No |
 
-## Recommended Models
+## Finding Models
 
-| Operation | Model | Notes |
-|-----------|-------|-------|
-| Segmentation | `fal-ai/sam-3/image` | SAM 3. Best segmentation, text/point/box prompts. |
-| Auto-segment | `fal-ai/sam2/auto-segment` | SAM 2. Segment everything automatically. |
-| Object detection | `fal-ai/florence-2-large/object-detection` | Florence-2. Standard detection. |
-| Open vocab detection | `fal-ai/florence-2-large/open-vocabulary-detection` | Florence-2. Detect any object by description. |
-| OCR (general) | `fal-ai/florence-2-large/ocr` | Florence-2 OCR. General text extraction. |
-| OCR (documents) | `fal-ai/got-ocr/v2` | GOT OCR v2. Best for tables, formulas, documents. |
-| Describe | `fal-ai/florence-2-large/detailed-caption` | Florence-2. Detailed captioning. |
-| Visual QA | `fal-ai/llava-next` | LLaVA v1.6. Best for detailed image questions. |
-| Lightweight QA | `fal-ai/moondream2` | Moondream. Fast, multi-task vision. |
+To discover the best and latest vision/analysis models, use the search API:
+
+```bash
+# Search for segmentation models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "segmentation"
+
+# Search for object detection models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "object detection"
+
+# Search for OCR models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "ocr"
+
+# Search for image captioning / visual QA models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "caption"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "visual question"
+```
+
+Or use the `search_models` MCP tool with keywords like "segmentation", "detection", "ocr", "caption", "vision".
+
+**Default models (used by script as fallback per operation):**
+- Segmentation: `fal-ai/sam-3/image`
+- Object detection: `fal-ai/florence-2-large/object-detection`
+- OCR: `fal-ai/florence-2-large/ocr`
+- Describe: `fal-ai/florence-2-large/detailed-caption`
+- Visual QA: `fal-ai/llava-next`

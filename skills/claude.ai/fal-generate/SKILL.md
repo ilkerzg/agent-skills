@@ -178,55 +178,26 @@ bash generate.sh --image-url "https://example.com/image.jpg" ...
 | `--lifecycle N` | Object expiration in seconds | - |
 | `--schema [MODEL]` | Get OpenAPI schema | - |
 
-## Recommended Models
+## Finding Models
 
-### Text-to-Image
-
-| Model | Notes |
-|-------|-------|
-| `fal-ai/imagen4/preview` | **Best quality** - Google Imagen 4 |
-| `fal-ai/nano-banana-pro` | **Best overall** - T2I and editing |
-| `fal-ai/kling-image/o3/text-to-image` | Highest quality photorealistic |
-| `fal-ai/flux-2` | Open source, high quality |
-| `fal-ai/flux-2/klein/realtime` | Real-time (~0.3s), rapid iteration |
-| `fal-ai/qwen-image/v2.5` | Strong Asian aesthetic, detailed scenes |
-| `fal-ai/z-image` | Fast turbo, good quality |
-| `fal-ai/ideogram/v3` | Best for text rendering |
-| `fal-ai/recraft-v3` | Design, illustrations, vector art |
-| `fal-ai/flux/dev` | Reliable, LoRA compatible |
-
-### Text-to-Video
-
-| Model | Notes |
-|-------|-------|
-| `fal-ai/kling-video/o3/pro/text-to-video` | Kling O3, highest quality |
-| `fal-ai/kling-video/v3/pro/text-to-video` | Kling V3, newest |
-| `fal-ai/veo3.1` | High quality |
-| `fal-ai/bytedance/seedance/v1/pro` | Fast, good quality |
-| `fal-ai/sora-2/pro` | OpenAI Sora |
-| `fal-ai/kling-video/v2.5-turbo/pro` | Fast, reliable |
-| `fal-ai/minimax/hailuo-02/pro` | Good for characters |
-
-### Image-to-Video
-
-| Model | Notes |
-|-------|-------|
-| `fal-ai/kling-video/v2.6/pro/image-to-video` | **Best overall** |
-| `fal-ai/veo3/fast` | Fast, high quality |
-| `fal-ai/bytedance/seedance/v1.5/pro/image-to-video` | Smooth motion |
-| `fal-ai/minimax/hailuo-02/standard/image-to-video` | Good balance |
-
-## Search Models
+To discover the best and latest models, use the search API:
 
 ```bash
+# Search by category
+bash search-models.sh --category "text-to-image"
+bash search-models.sh --category "text-to-video"
+bash search-models.sh --category "image-to-video"
+
 # Search by keyword
 bash search-models.sh --query "flux"
-
-# Filter by category
-bash search-models.sh --category "text-to-video"
+bash search-models.sh --query "kling video"
 ```
 
+Or use the `search_models` MCP tool with relevant keywords.
+
 **Categories:** `text-to-image`, `image-to-image`, `text-to-video`, `image-to-video`, `text-to-speech`, `speech-to-text`
+
+**Default model (used by script as fallback):** `fal-ai/nano-banana-pro`
 
 ## Get Model Schema (OpenAPI)
 

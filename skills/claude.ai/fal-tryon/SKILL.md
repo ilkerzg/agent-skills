@@ -38,13 +38,20 @@ Virtual try-on — transfer garments onto person photos using fal.ai models.
 | `--model` / `-m` | Model endpoint | No (default: fal-ai/fashn/tryon/v1.5) |
 | `--quality` | speed, balanced, quality | No (default: balanced) |
 
-## Recommended Models
+## Finding Models
 
-| Use Case | Model | Notes |
-|----------|-------|-------|
-| Best quality | `fal-ai/fashn/tryon/v1.5` | FASHN v1.5. 3 quality modes. |
-| Alternative | `fal-ai/cat-vton` | CatVTON. Good results. |
-| Kling-based | `fal-ai/kling/v1-5/kolors-virtual-try-on` | Kolors Virtual Try-On. |
+To discover the best and latest virtual try-on models, use the search API:
+
+```bash
+# Search for try-on models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "try-on"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "virtual tryon"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "garment"
+```
+
+Or use the `search_models` MCP tool with keywords like "try-on", "tryon", "garment", "fashion".
+
+**Default model (used by script as fallback):** `fal-ai/fashn/tryon/v1.5`
 
 ## Tips
 

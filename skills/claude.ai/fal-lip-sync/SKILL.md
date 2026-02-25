@@ -21,7 +21,7 @@ Create talking head videos, sync lips to audio, and animate portraits using fal.
 
 ### Talking Head (Image + Audio → Video)
 ```bash
-./scripts/talking-head.sh --image-url "https://example.com/portrait.jpg" --audio-url "https://example.com/speech.mp3" --model fal-ai/veed/fabric-1.0
+./scripts/talking-head.sh --image-url "https://example.com/portrait.jpg" --audio-url "https://example.com/speech.mp3" --model veed/fabric-1.0
 ```
 
 ### Talking Head (Image + Text → Video with auto TTS)
@@ -42,7 +42,7 @@ Create talking head videos, sync lips to audio, and animate portraits using fal.
 | `--image-url` | URL of portrait/face image | Yes |
 | `--audio-url` | URL of audio to sync | Yes (or --text) |
 | `--text` | Text to speak (auto TTS) | Yes (or --audio-url) |
-| `--model` / `-m` | Model endpoint | No (default: fal-ai/veed/fabric-1.0) |
+| `--model` / `-m` | Model endpoint | No (default: veed/fabric-1.0) |
 | `--tts-model` | TTS model for --text mode | No (default: fal-ai/minimax/speech-2.6-turbo) |
 | `--wait` / `-w` | Wait for completion | No (default: true) |
 | `--async` / `-a` | Return request ID immediately | No |
@@ -54,16 +54,26 @@ Create talking head videos, sync lips to audio, and animate portraits using fal.
 | `--audio-url` | URL of audio to sync to | Yes |
 | `--model` / `-m` | Model endpoint | No (default: fal-ai/sync-lipsync/v2) |
 
-## Recommended Models
+## Finding Models
 
-| Use Case | Model | Notes |
-|----------|-------|-------|
-| Best talking head | `fal-ai/veed/fabric-1.0` | VEED Fabric. High fidelity. |
-| Audio-correlated motion | `fal-ai/bytedance/omnihuman/v1.5` | OmniHuman. Strong audio-motion correlation. |
-| Avatar speaking/singing | `fal-ai/creatify/aurora` | Aurora. High-fidelity avatar videos. |
-| Best lip sync | `fal-ai/sync-lipsync/v2` | Sync Lipsync 2.0. Best video lip sync. |
-| Alternative lip sync | `fal-ai/pixverse/lipsync` | PixVerse. Good quality. |
-| Live portrait | `fal-ai/live-portrait` | Transfer expressions from driving video. |
+To discover the best and latest lip sync and talking head models, use the search API:
+
+```bash
+# Search for talking head models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "talking head"
+
+# Search for lip sync models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "lip sync"
+
+# Search for live portrait / expression transfer
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "live portrait"
+```
+
+Or use the `search_models` MCP tool with relevant keywords like "lip sync", "talking head", "avatar".
+
+**Default models (used by scripts as fallback):**
+- Talking head: `veed/fabric-1.0`
+- Lip sync: `fal-ai/sync-lipsync/v2`
 
 ## Output Format
 ```json

@@ -47,13 +47,25 @@ Restore and enhance image quality using AI — fix blur, noise, haze, faces, and
 | `--model` / `-m` | Override model endpoint | No |
 | `--fidelity` | For fix-face: 0.0-1.0 (0=max quality, 1=most faithful) | No |
 
-## Recommended Models
+## Finding Models
 
-| Operation | Model | Notes |
-|-----------|-------|-------|
-| Deblur | `fal-ai/nafnet/deblur` | NAFNet. Motion blur removal. |
-| Denoise | `fal-ai/nafnet/denoise` | NAFNet. Noise/grain removal. |
-| Dehaze | `fal-ai/mix-dehaze-net` | MixDehazer. Haze/fog removal. |
-| Fix face | `fal-ai/codeformer` | CodeFormer. Controllable face restoration. |
-| Document restore | `fal-ai/docres` | DocRes. Deshadow, deblur, binarize. |
-| Document dewarp | `fal-ai/docres/dewarp` | DocRes. Fix curved/bent documents. |
+To discover the best and latest image restoration models, use the search API:
+
+```bash
+# Search for restoration models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "restore"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "deblur"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "denoise"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "face restoration"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "document"
+```
+
+Or use the `search_models` MCP tool with keywords like "restore", "deblur", "denoise", "face fix", "document".
+
+**Default models (used by script as fallback per operation):**
+- Deblur: `fal-ai/nafnet/deblur`
+- Denoise: `fal-ai/nafnet/denoise`
+- Dehaze: `fal-ai/mix-dehaze-net`
+- Fix face: `fal-ai/codeformer`
+- Document restore: `fal-ai/docres`
+- Document dewarp: `fal-ai/docres/dewarp`

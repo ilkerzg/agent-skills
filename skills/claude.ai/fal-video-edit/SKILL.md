@@ -61,16 +61,26 @@ Edit, remix, upscale, and enhance existing videos using fal.ai models.
 | `--prompt` / `-p` | Description of desired audio/sounds | No |
 | `--model` / `-m` | Model endpoint | No (default: fal-ai/mmaudio-v2) |
 
-## Recommended Models
+## Finding Models
 
-| Operation | Model | Notes |
-|-----------|-------|-------|
-| Remix (pro) | `fal-ai/kling-video/o3/pro/video-to-video/reference` | Best quality remix |
-| Remix (fast) | `fal-ai/kling-video/o3/standard/video-to-video/reference` | Faster |
-| Edit (pro) | `fal-ai/kling-video/o3/pro/video-to-video/edit` | Best quality edit |
-| Edit (fast) | `fal-ai/kling-video/o3/standard/video-to-video/edit` | Faster |
-| Upscale (pro) | `fal-ai/topaz/upscale/video` | Professional quality |
-| Upscale (fast) | `fal-ai/flashvsr` | Fast super-resolution |
-| Remove BG | `fal-ai/bria/video/background-removal` | Clean removal |
-| Add audio | `fal-ai/mmaudio-v2` | Synchronized audio from video |
-| Sound effects | `fal-ai/pixverse/sound-effects` | Add SFX and music |
+To discover the best and latest video editing models, use the search API:
+
+```bash
+# Search for video editing models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "video editing"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "video-to-video"
+
+# Search for video upscaling
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "upscale video"
+
+# Search for video background removal
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "video background removal"
+
+# Search for video audio generation
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "video to audio"
+```
+
+Or use the `search_models` MCP tool with keywords like "video edit", "video remix", "video upscale", "video audio".
+
+**Default models (used by scripts as fallback):**
+- Video audio: `fal-ai/mmaudio-v2`

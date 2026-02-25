@@ -46,15 +46,20 @@ Train custom LoRA models on fal.ai for personalized AI generation.
 | `--request-id` | Request ID for status check | With --status |
 | `--param` | Extra param as key=value (repeatable) | No |
 
-## Recommended Models
+## Finding Models
 
-| Use Case | Model | Notes |
-|----------|-------|-------|
-| General LoRA | `fal-ai/flux-lora-fast-training` | Best general-purpose. Style, subject, person. |
-| Portrait LoRA | `fal-ai/flux-lora-portrait-trainer` | Optimized for face consistency. |
-| FLUX.2 LoRA | `fal-ai/flux-2-trainer-v2` | Train on latest FLUX.2 architecture. |
-| Kontext editing | `fal-ai/flux-kontext-trainer` | Train LoRA for image editing. |
-| Video LoRA | `fal-ai/wan-trainer/t2v-14b` | Train video generation LoRA. |
+To discover the best and latest training/LoRA models, use the search API:
+
+```bash
+# Search for LoRA training models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "lora training"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "trainer"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "fine-tune"
+```
+
+Or use the `search_models` MCP tool with keywords like "lora", "training", "trainer", "fine-tune".
+
+**Default model (used by script as fallback):** `fal-ai/flux-lora-fast-training`
 
 ## Training Data Tips
 

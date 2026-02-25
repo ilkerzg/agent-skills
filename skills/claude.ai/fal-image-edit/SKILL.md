@@ -17,29 +17,34 @@ Edit images using AI: style transfer, object removal, background changes, and mo
 3. Sends request to fal.ai API
 4. Returns edited image URL
 
-## Recommended Models
+## Finding Models
 
-| Model | Best For |
-|-------|----------|
-| `fal-ai/qwen-image/v2.5/edit` | **Best for instruction-based editing** |
-| `fal-ai/nano-banana-pro` | Best overall - T2I and editing |
-| `fal-ai/flux-kontext` | Background change, context-aware editing |
-| `fal-ai/flux/dev/image-to-image` | Style transfer |
-| `fal-ai/z-image/image-to-image` | Fast turbo style transfer |
-| `fal-ai/bria/fibo-edit` | Object removal |
-| `fal-ai/flux/dev/inpainting` | Masked inpainting |
+To discover the best and latest image editing models, use the search API:
+
+```bash
+# Search for image editing models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --category "image-to-image"
+
+# Search for specific editing capabilities
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "image editing"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "inpainting"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "object removal"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "background removal"
+```
+
+Or use the `search_models` MCP tool with relevant keywords.
+
+**Default model (used by script as fallback):** `fal-ai/flux/dev/image-to-image`
 
 ## Supported Operations
 
-| Operation | Model | Description |
-|-----------|-------|-------------|
-| General Edit | `fal-ai/qwen-image/v2.5/edit` | Best instruction-based edits |
-| General Edit | `fal-ai/nano-banana-pro` | Best quality edits |
-| Style Transfer | `fal-ai/flux/dev/image-to-image` | Apply style to image |
-| Style Transfer | `fal-ai/z-image/image-to-image` | Fast turbo style transfer |
-| Object Removal | `fal-ai/bria/fibo-edit` | Remove objects from image |
-| Background Change | `fal-ai/flux-kontext` | Change/replace background |
-| Inpainting | `fal-ai/flux/dev/inpainting` | Fill in masked areas |
+| Operation | Description |
+|-----------|-------------|
+| Style Transfer | Apply artistic style to image |
+| Object Removal | Remove objects from image |
+| Background Change | Change/replace background |
+| Inpainting | Fill in masked areas |
+| General Edit | Instruction-based edits |
 
 ## Usage
 
@@ -111,7 +116,7 @@ mcp__fal-ai__generate({
 ### Object Removal
 ```javascript
 mcp__fal-ai__generate({
-  modelId: "fal-ai/bria/fibo-edit",
+  modelId: "bria/eraser",
   input: {
     image_url: "https://example.com/photo.jpg",
     prompt: "Remove the person on the left"
@@ -122,7 +127,7 @@ mcp__fal-ai__generate({
 ### Background Change (Kontext)
 ```javascript
 mcp__fal-ai__generate({
-  modelId: "fal-ai/flux-kontext",
+  modelId: "fal-ai/flux-pro/kontext",
   input: {
     image_url: "https://example.com/portrait.jpg",
     prompt: "Place the subject in a tropical beach setting"
@@ -133,7 +138,7 @@ mcp__fal-ai__generate({
 ### Inpainting
 ```javascript
 mcp__fal-ai__generate({
-  modelId: "fal-ai/flux/dev/inpainting",
+  modelId: "fal-ai/flux-lora-fill",
   input: {
     image_url: "https://example.com/photo.jpg",
     mask_url: "https://example.com/mask.png",
@@ -178,33 +183,13 @@ Here's your edited image:
 • 1024×1024 | Operation: Style Transfer
 ```
 
-## Model Selection Guide
+## Model Selection Tips
 
-### General Editing (Recommended)
-**Nano Banana Pro** (`fal-ai/nano-banana-pro`)
-- **Best overall** for image editing and T2I
-- High quality, versatile
-- Good for most editing tasks
-
-### Style Transfer
-**FLUX Image-to-Image** (`fal-ai/flux/dev/image-to-image`)
-- Best for: Artistic style changes
-- Strength: 0.3-0.5 for subtle, 0.7-0.9 for dramatic
-
-### Object Removal
-**Bria Fibo Edit** (`fal-ai/bria/fibo-edit`)
-- Best for: Removing objects, people, text
-- Works without masks (AI detects objects from prompt)
-
-### Background Change
-**FLUX Kontext** (`fal-ai/flux-kontext`)
-- Best for: Placing subjects in new environments
-- Preserves subject identity well
-
-### Inpainting
-**FLUX Inpainting** (`fal-ai/flux/dev/inpainting`)
-- Best for: Precise edits with mask control
-- Requires binary mask (white = edit area)
+- **General Editing**: Search for "image editing" models. Good for instruction-based changes.
+- **Style Transfer**: Search for `image-to-image` category. Adjust strength: 0.3-0.5 for subtle, 0.7-0.9 for dramatic.
+- **Object Removal**: Search for "eraser" or "object removal". Some work without masks.
+- **Background Change**: Search for "background" or "kontext". Look for models that preserve subject identity.
+- **Inpainting**: Search for "inpainting" or "fill". Requires binary mask (white = edit area).
 
 ## Mask Tips
 

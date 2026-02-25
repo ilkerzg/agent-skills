@@ -20,7 +20,7 @@ Generate 3D models (GLB/OBJ/PLY) from text descriptions or images using fal.ai.
 
 ### Image to 3D
 ```bash
-./scripts/generate-3d.sh --image-url "https://example.com/object.jpg" --model fal-ai/hunyuan-3d/v3.1
+./scripts/generate-3d.sh --image-url "https://example.com/object.jpg" --model fal-ai/hunyuan3d-v3/image-to-3d
 ```
 
 ### Text to 3D
@@ -34,19 +34,26 @@ Generate 3D models (GLB/OBJ/PLY) from text descriptions or images using fal.ai.
 |----------|-------------|----------|
 | `--image-url` | URL of image to convert to 3D | Yes (or --prompt) |
 | `--prompt` / `-p` | Text description for text-to-3D | Yes (or --image-url) |
-| `--model` / `-m` | Model endpoint | No (default: fal-ai/hunyuan-3d/v3.1) |
+| `--model` / `-m` | Model endpoint | No (default: fal-ai/hunyuan3d-v3/image-to-3d) |
 | `--param` | Extra param as key=value (repeatable) | No |
 
-## Recommended Models
+## Finding Models
 
-| Use Case | Model | Notes |
-|----------|-------|-------|
-| Best image-to-3D | `fal-ai/hunyuan-3d/v3.1` | Hunyuan3D v3.1. Highest quality. |
-| Fast image-to-3D | `fal-ai/trellis` | TRELLIS. Fast conversion. |
-| Text-to-3D | `fal-ai/meshy/v6/text-to-3d` | Meshy v6. Best text-to-3D. |
-| Image-to-3D alt | `fal-ai/meshy/v6/image-to-3d` | Meshy v6. Good alternative. |
-| Game assets | `fal-ai/rodin/generation` | Rodin. Designed for game assets. |
-| Single image | `fal-ai/triposr` | TripoSR. Fast single-image 3D. |
+To discover the best and latest 3D generation models, use the search API:
+
+```bash
+# Search for image-to-3D models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --category "image-to-3d"
+
+# Search for text-to-3D models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "text to 3d"
+```
+
+Or use the `search_models` MCP tool with relevant keywords like "3d", "mesh", "image-to-3d".
+
+**Default models (used by scripts as fallback):**
+- Image-to-3D: `fal-ai/hunyuan3d-v3/image-to-3d`
+- Text-to-3D: `fal-ai/meshy/v6/text-to-3d`
 
 ## Tips
 

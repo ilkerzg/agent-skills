@@ -47,14 +47,20 @@ Real-time and streaming image generation using fal.ai's fastest models. Results 
 | `--lora-scale` | LoRA influence (0.0-1.0, default: 1.0) | No |
 | `--num-images` | Number of images (default: 1) | No |
 
-## Recommended Models
+## Finding Models
 
-| Model | Speed | Notes |
-|-------|-------|-------|
-| `fal-ai/flux-2/klein/realtime` | ~0.3s | **Default.** FLUX.2 Klein Realtime. Best speed/quality ratio. |
-| `fal-ai/flux/schnell` | ~1s | FLUX.1 Schnell. 4-step generation. Slightly higher quality. |
-| `fal-ai/flux-2-turbo` | ~2s | FLUX.2 Turbo. Better quality, still fast. |
-| `fal-ai/hyper-sdxl` | ~0.5s | HyperSDXL. Very fast, SDXL-based. |
+To discover the best and latest real-time generation models, use the search API:
+
+```bash
+# Search for real-time / fast image generation models
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "realtime"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "fast image"
+bash /mnt/skills/user/fal-generate/scripts/search-models.sh --category "text-to-image"
+```
+
+Or use the `search_models` MCP tool with keywords like "realtime", "fast", "schnell", "turbo".
+
+**Default model (used by script as fallback):** `fal-ai/flux-2/klein/realtime`
 
 ## When to Use Real-Time vs Standard Generation
 
