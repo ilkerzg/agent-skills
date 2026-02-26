@@ -197,8 +197,6 @@ Or use the `search_models` MCP tool with relevant keywords.
 
 **Categories:** `text-to-image`, `image-to-image`, `text-to-video`, `image-to-video`, `text-to-speech`, `speech-to-text`
 
-**Default model (used by script as fallback):** `fal-ai/nano-banana-pro`
-
 ## Get Model Schema (OpenAPI)
 
 **IMPORTANT:** Fetch schema to see exact parameters for any model.

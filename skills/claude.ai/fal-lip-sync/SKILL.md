@@ -71,10 +71,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "live portra
 
 Or use the `search_models` MCP tool with relevant keywords like "lip sync", "talking head", "avatar".
 
-**Default models (used by scripts as fallback):**
-- Talking head: `veed/fabric-1.0`
-- Lip sync: `fal-ai/sync-lipsync/v2`
-
 ## Output Format
 ```json
 {

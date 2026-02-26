@@ -60,8 +60,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --category "text-to-
 
 Or use the `search_models` MCP tool with keywords like "realtime", "fast", "schnell", "turbo".
 
-**Default model (used by script as fallback):** `fal-ai/flux-2/klein/realtime`
-
 ## When to Use Real-Time vs Standard Generation
 
 | Use Case | Use Real-Time | Use Standard |

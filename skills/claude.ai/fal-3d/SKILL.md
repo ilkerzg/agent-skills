@@ -51,10 +51,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "text to 3d"
 
 Or use the `search_models` MCP tool with relevant keywords like "3d", "mesh", "image-to-3d".
 
-**Default models (used by scripts as fallback):**
-- Image-to-3D: `fal-ai/hunyuan3d-v3/image-to-3d`
-- Text-to-3D: `fal-ai/meshy/v6/text-to-3d`
-
 ## Tips
 
 - For best results from images: use a clear photo with a single object on a plain background

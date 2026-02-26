@@ -51,8 +51,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "garment"
 
 Or use the `search_models` MCP tool with keywords like "try-on", "tryon", "garment", "fashion".
 
-**Default model (used by script as fallback):** `fal-ai/fashn/tryon/v1.5`
-
 ## Tips
 
 - Person photo should show clear full or upper body

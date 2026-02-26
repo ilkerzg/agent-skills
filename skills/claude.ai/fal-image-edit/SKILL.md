@@ -34,8 +34,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "background 
 
 Or use the `search_models` MCP tool with relevant keywords.
 
-**Default model (used by script as fallback):** `fal-ai/flux/dev/image-to-image`
-
 ## Supported Operations
 
 | Operation | Description |
@@ -90,62 +88,7 @@ bash /mnt/skills/user/fal-image-edit/scripts/edit-image.sh \
 
 ## MCP Tool Alternative
 
-### General Edit (Recommended)
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/nano-banana-pro",
-  input: {
-    image_url: "https://example.com/photo.jpg",
-    prompt: "Make the sky more dramatic with sunset colors"
-  }
-})
-```
-
-### Style Transfer
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/flux/dev/image-to-image",
-  input: {
-    image_url: "https://example.com/photo.jpg",
-    prompt: "Convert to anime style",
-    strength: 0.75
-  }
-})
-```
-
-### Object Removal
-```javascript
-mcp__fal-ai__generate({
-  modelId: "bria/eraser",
-  input: {
-    image_url: "https://example.com/photo.jpg",
-    prompt: "Remove the person on the left"
-  }
-})
-```
-
-### Background Change (Kontext)
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/flux-pro/kontext",
-  input: {
-    image_url: "https://example.com/portrait.jpg",
-    prompt: "Place the subject in a tropical beach setting"
-  }
-})
-```
-
-### Inpainting
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/flux-lora-fill",
-  input: {
-    image_url: "https://example.com/photo.jpg",
-    mask_url: "https://example.com/mask.png",
-    prompt: "Fill with flowers"
-  }
-})
-```
+Use `search_models` MCP tool or `search-models.sh` to find the best current model for each operation (style transfer, object removal, background change, inpainting), then call `mcp__fal-ai__generate` with the discovered `modelId`.
 
 ## Output
 

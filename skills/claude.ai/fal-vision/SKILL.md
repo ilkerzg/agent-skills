@@ -72,10 +72,3 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "visual ques
 ```
 
 Or use the `search_models` MCP tool with keywords like "segmentation", "detection", "ocr", "caption", "vision".
-
-**Default models (used by script as fallback per operation):**
-- Segmentation: `fal-ai/sam-3/image`
-- Object detection: `fal-ai/florence-2-large/object-detection`
-- OCR: `fal-ai/florence-2-large/ocr`
-- Describe: `fal-ai/florence-2-large/detailed-caption`
-- Visual QA: `fal-ai/llava-next`

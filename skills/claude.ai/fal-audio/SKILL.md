@@ -34,10 +34,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "music gener
 
 Or use the `search_models` MCP tool with relevant keywords like "tts", "speech", "music".
 
-**Default models (used by scripts as fallback):**
-- Text-to-Speech: `fal-ai/minimax/speech-2.8-turbo`
-- Speech-to-Text: `fal-ai/whisper`
-
 ## Usage
 
 ### Text-to-Speech
@@ -105,25 +101,7 @@ bash /mnt/skills/user/fal-audio/scripts/speech-to-text.sh \
 
 ## MCP Tool Alternative
 
-### Text-to-Speech
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/minimax/speech-2.8-turbo",
-  input: {
-    text: "Hello, welcome to the future of AI."
-  }
-})
-```
-
-### Speech-to-Text
-```javascript
-mcp__fal-ai__generate({
-  modelId: "fal-ai/whisper",
-  input: {
-    audio_url: "https://example.com/audio.mp3"
-  }
-})
-```
+Use `search_models` MCP tool or `search-models.sh` to find the best current model, then call `mcp__fal-ai__generate` with the discovered `modelId`.
 
 ## Output
 

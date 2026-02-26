@@ -59,8 +59,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "fine-tune"
 
 Or use the `search_models` MCP tool with keywords like "lora", "training", "trainer", "fine-tune".
 
-**Default model (used by script as fallback):** `fal-ai/flux-lora-fast-training`
-
 ## Training Data Tips
 
 - **People**: 10-20 photos, varied angles/lighting/expressions, consistent person

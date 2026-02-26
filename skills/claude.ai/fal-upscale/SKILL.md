@@ -34,8 +34,6 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "super resol
 
 Or use the `search_models` MCP tool with keywords like "upscale", "super resolution", "enhance".
 
-**Default model (used by script as fallback):** `fal-ai/aura-sr`
-
 ## Usage
 
 ```bash
@@ -73,15 +71,7 @@ bash /mnt/skills/user/fal-upscale/scripts/upscale.sh \
 
 ## MCP Tool Alternative
 
-If MCP tools are available, prefer using:
-```
-mcp__fal-ai__generate({
-  modelId: "fal-ai/aura-sr",
-  input: {
-    image_url: "https://example.com/image.jpg"
-  }
-})
-```
+Use `search_models` MCP tool or `search-models.sh` to find the best current upscaling model, then call `mcp__fal-ai__generate` with the discovered `modelId`.
 
 ## Output
 

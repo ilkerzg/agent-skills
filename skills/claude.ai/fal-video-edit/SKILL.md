@@ -81,6 +81,3 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "video to au
 ```
 
 Or use the `search_models` MCP tool with keywords like "video edit", "video remix", "video upscale", "video audio".
-
-**Default models (used by scripts as fallback):**
-- Video audio: `fal-ai/mmaudio-v2`

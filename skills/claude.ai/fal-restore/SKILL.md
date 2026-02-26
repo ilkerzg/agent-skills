@@ -61,11 +61,3 @@ bash /mnt/skills/user/fal-generate/scripts/search-models.sh --query "document"
 ```
 
 Or use the `search_models` MCP tool with keywords like "restore", "deblur", "denoise", "face fix", "document".
-
-**Default models (used by script as fallback per operation):**
-- Deblur: `fal-ai/nafnet/deblur`
-- Denoise: `fal-ai/nafnet/denoise`
-- Dehaze: `fal-ai/mix-dehaze-net`
-- Fix face: `fal-ai/codeformer`
-- Document restore: `fal-ai/docres`
-- Document dewarp: `fal-ai/docres/dewarp`
