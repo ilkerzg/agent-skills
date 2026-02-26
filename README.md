@@ -102,35 +102,6 @@ bash skills/claude.ai/fal-generate/scripts/search-models.sh \
   --query "text to video"
 ```
 
-## Recommended Models (Feb 2026)
-
-### Text-to-Image
-| Model | Notes |
-|-------|-------|
-| `fal-ai/nano-banana-pro` | **Best overall** |
-| `fal-ai/kling-image/o3/text-to-image` | Highest quality photorealistic |
-| `fal-ai/flux-2-turbo` | Open source, high quality |
-| `fal-ai/flux-2/klein/realtime` | Real-time (~0.3s) |
-| `fal-ai/qwen-image/v2.5` | Strong Asian aesthetic, detailed |
-| `fal-ai/z-image` | Fast turbo, good quality |
-| `fal-ai/ideogram/v3` | Best for text rendering |
-| `fal-ai/recraft-v3` | Design, illustrations, vector art |
-
-### Text-to-Video
-| Model | Notes |
-|-------|-------|
-| `fal-ai/veo3.1` | Highest quality |
-| `fal-ai/bytedance/seedance/v1/pro` | Fast, good quality |
-| `fal-ai/sora-2/pro` | OpenAI Sora |
-| `fal-ai/kling-video/v2.5-turbo/pro` | Fast, reliable |
-
-### Image-to-Video
-| Model | Notes |
-|-------|-------|
-| `fal-ai/kling-video/v2.6/pro/image-to-video` | **Best overall** |
-| `fal-ai/veo3/fast` | Fast, high quality |
-| `fal-ai/bytedance/seedance/v1.5/pro/image-to-video` | Smooth motion |
-
 ## Skill Format
 
 Each skill follows the community skills standard:
